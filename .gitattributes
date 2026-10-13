@@ -1,0 +1,14 @@
+# 统一换行符，避免 Windows / macOS 协作时整文件 diff
+* text=auto
+*.js    text eol=lf
+*.json  text eol=lf
+*.wxml  text eol=lf
+*.wxss  text eol=lf
+*.md    text eol=lf
+
+# 图片按二进制处理，禁止换行转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
