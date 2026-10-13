@@ -1,0 +1,91 @@
+<view class="page">
+
+  <view class="search-bar">
+    <view class="search-box">
+      <text class="search-icon">⌕</text>
+      <input
+        class="search-input"
+        value="{{keyword}}"
+        confirm-type="search"
+        placeholder="{{mode === 'major' ? '输入专业名称，如 计算机' : '输入学校名称或院校代码'}}"
+        bindinput="onKeyword"
+      />
+      <text class="search-clear" wx:if="{{keyword}}" bindtap="clearKeyword">×</text>
+    </view>
+  </view>
+
+  <view class="seg">
+    <view class="seg-item {{mode === 'college' ? 'seg-on' : ''}}" data-mode="college" bindtap="switchMode">按院校</view>
+    <view class="seg-item {{mode === 'major' ? 'seg-on' : ''}}" data-mode="major" bindtap="switchMode">按专业</view>
+  </view>
+
+  <scroll-view class="chips" scroll-x="true">
+    <view
+      wx:for="{{regions}}"
+      wx:key="*this"
+      class="chip {{region === item ? 'chip-on' : ''}}"
+      data-value="{{item}}"
+      bindtap="pickRegion"
+    >{{item}}</view>
+    <view
+      wx:for="{{natures}}"
+      wx:key="*this"
+      class="chip {{nature === item ? 'chip-on' : ''}}"
+      data-value="{{item}}"
+      bindtap="pickNature"
+    >{{item}}</view>
+  </scroll-view>
+
+  <view class="filter-row">
+    <view class="chip {{onlyMatch ? 'chip-on' : ''}}" bindtap="toggleMatch">只看选科符合</view>
+    <view class="chip" bindtap="toggleSort">{{sort === 'band' ? '位次接近优先' : '最低位次从高到低'}}</view>
+    <view class="chip chip-on" wx:if="{{band}}" bindtap="clearBand">{{bandLabel}} ×</view>
+  </view>
+
+  <view class="tip">一所大学可以有多个专业组，每个组占用 <text class="bold">1 个</text>志愿位置。当前共 {{count}} 个专业组。</view>
+
+  <view class="tip tip-plain" wx:if="{{!hasRank}}">没有填写位次时不显示个人分层，可以先按选科和地区筛选并收藏。</view>
+
+  <view wx:for="{{list}}" wx:key="id" class="card group-card" data-id="{{item.id}}" bindtap="goDetail">
+    <view class="row-top">
+      <view class="flex-1">
+        <view class="school">{{item.collegeName}}</view>
+        <view class="tags-line">
+          <text class="tag tag-brand">组 {{item.groupCode}}</text>
+          <text class="tag tag-line">{{item.subjectText}}</text>
+          <text class="tag tag-line" wx:if="{{item.nature}}">{{item.nature}}</text>
+        </view>
+      </view>
+      <text class="tag {{item.bandCls}}" wx:if="{{hasRank}}">{{item.bandLabel}}</text>
+      <text class="tag tag-line" wx:else>待定位</text>
+    </view>
+
+    <view class="divider"></view>
+
+    <view class="row">
+      <view class="metric">
+        <text class="m-num">{{item.rankText}}</text>
+        <text class="m-lab">{{item.latestYear ? item.latestYear + ' 最低位次' : '暂无历史位次'}}</text>
+      </view>
+      <view class="metric">
+        <text class="m-num">{{item.plan}}</text>
+        <text class="m-lab">计划 人</text>
+      </view>
+      <view class="btn btn-sm btn-ghost" data-id="{{item.id}}" catchtap="quickAdd">加入志愿表</view>
+    </view>
+
+    <view class="t-tiny major-line" wx:if="{{item.majors.length}}">
+      组内专业 {{item.majors.length}} 个：{{item.majors[0].name}} 等
+    </view>
+    <view class="t-tiny major-line matched" wx:if="{{item.matchedMajors}}">匹配专业：{{item.matchedMajors}}</view>
+  </view>
+
+  <view class="empty" wx:if="{{!list.length}}">
+    没有找到符合条件的院校专业组，试试减少筛选条件或换个关键词。
+  </view>
+
+  <view class="list-foot">
+    <view class="btn btn-light" bindtap="goWish">查看我的志愿表</view>
+  </view>
+
+</view>

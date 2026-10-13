@@ -1,0 +1,36 @@
+.kind-row { padding: 20rpx var(--gap) 0; }
+.sec { margin: 20rpx var(--gap) 0; }
+.score-input {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: var(--brand-dark);
+  text-align: right;
+  width: 240rpx;
+}
+.result-row { display: flex; margin: 18rpx 0 8rpx; }
+.p-num { margin-right: 56rpx; }
+.p-num .num {
+  font-size: 48rpx;
+  font-weight: 600;
+  color: var(--brand-dark);
+}
+.p-num .unit { font-size: 22rpx; color: var(--text-3); margin-left: 8rpx; }
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 300rpx;
+  margin-top: 24rpx;
+}
+.barwrap { text-align: center; flex: 1; }
+.bar {
+  width: 80rpx;
+  margin: 0 auto 12rpx;
+  background: var(--brand-mid);
+  border-radius: 10rpx 10rpx 0 0;
+}
+.bar-now { background: var(--brand); }
+.bar-rank { font-size: 26rpx; font-weight: 600; color: var(--brand-dark); }
+.bars-note { margin-top: 20rpx; }
+.foot { padding: 30rpx var(--gap) 60rpx; }

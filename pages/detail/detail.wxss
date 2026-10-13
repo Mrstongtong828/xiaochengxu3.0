@@ -1,0 +1,61 @@
+.school { font-size: 34rpx; font-weight: 600; }
+.sub { margin-top: 8rpx; }
+.note { margin-top: 16rpx; }
+
+.page > .card { margin: 0 var(--gap) 20rpx; }
+.page > .conclusion { margin: 0 var(--gap) 20rpx; }
+
+.major { display: flex; padding: 20rpx 0; border-top: 1rpx solid var(--line); }
+.major:first-of-type { border-top: 0; }
+.m-name { font-size: 30rpx; font-weight: 500; }
+
+.sel-name { font-size: 28rpx; margin-left: 16rpx; }
+.op {
+  width: 56rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  text-align: center;
+  border: 1rpx solid var(--line);
+  border-radius: 12rpx;
+  margin-left: 12rpx;
+  color: var(--text-2);
+  font-size: 28rpx;
+}
+.op-del { color: var(--danger); }
+
+.adjust-tip { margin: 18rpx 0 0; }
+.foot { padding: 0 var(--gap) 20rpx; }
+
+.est-tip { margin: 16rpx 0 0; }
+.life-row { padding: 16rpx 0; border-top: 1rpx dashed var(--line); }
+.divider + .life-row { border-top: 0; }
+.life-label { font-size: 25rpx; color: var(--text-2); }
+.life-value {
+  font-size: 28rpx;
+  font-weight: 600;
+  line-height: 1.55;
+  margin-top: 4rpx;
+}
+.life-source { margin-top: 16rpx; }
+
+.mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(20, 35, 55, 0.42);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+.modal {
+  width: 620rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+}
+.modal-title { font-size: 34rpx; font-weight: 600; }
+.modal-note { margin-top: 20rpx; }
+.modal-btn { margin-top: 24rpx; }

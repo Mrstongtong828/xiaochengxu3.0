@@ -1,0 +1,65 @@
+<view class="page">
+
+  <view class="chips kind-row">
+    <view
+      wx:for="{{kinds}}"
+      wx:key="*this"
+      class="chip {{kind === item ? 'chip-on' : ''}}"
+      data-value="{{item}}"
+      bindtap="pickKind"
+    >{{item}}类</view>
+  </view>
+
+  <view class="card card-tight sec">
+    <view class="row">
+      <view class="t-sub">输入分数</view>
+      <input class="score-input" type="number" value="{{score}}" bindinput="onScore" />
+    </view>
+  </view>
+
+  <view class="card sec" wx:if="{{result}}">
+    <view class="row">
+      <view class="card-title">{{score}} 分累计位次</view>
+      <view class="tag tag-brand">2026 {{kind}}类</view>
+    </view>
+    <view class="result-row">
+      <view class="p-num">
+        <text class="num">{{result.rank}}</text>
+        <text class="unit">位次</text>
+      </view>
+      <view class="p-num">
+        <text class="num">{{result.segment}}</text>
+        <text class="unit">本段人数（估算）</text>
+      </view>
+    </view>
+    <view class="t-tiny">分数不可跨年比较，跨年比较请使用位次。</view>
+  </view>
+
+  <view class="card sec" wx:if="{{bars.length}}">
+    <view class="card-title">{{score}} 分对应的位次变化</view>
+    <view class="bars">
+      <view class="barwrap" wx:for="{{bars}}" wx:key="year">
+        <view class="bar {{item.isNow ? 'bar-now' : ''}}" style="height: {{item.height}}rpx"></view>
+        <view class="bar-rank">{{item.rank}}</view>
+        <view class="t-tiny">{{item.year}} {{kind}}</view>
+      </view>
+    </view>
+    <view class="t-tiny bars-note">
+      柱越高表示位次越靠后（越难）。同样 {{score}} 分在不同年份对应的位次不同，差异来自试题难度与考生人数变化。
+    </view>
+  </view>
+
+  <view class="card card-tight sec">
+    <view class="row">
+      <view class="t-sub">{{kind}}类本科批次线</view>
+      <view class="bold">{{batchLine}}</view>
+    </view>
+  </view>
+
+  <view class="tip tip-plain sec">
+    {{dataNote}}　位次与批次线均为演示样例，正式使用前请替换为考试院公布的数据。
+  </view>
+
+  <view class="t-tiny foot">位次数值越小排名越靠前。历史数据只说明过去的门槛，不代表今年的录取结果。</view>
+
+</view>

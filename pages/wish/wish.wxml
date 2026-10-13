@@ -1,0 +1,78 @@
+<view class="page page-with-bar">
+
+  <view class="card card-tight head-card">
+    <view class="row">
+      <view class="bold">已填 {{count}} / {{maxGroups}} 组</view>
+      <view class="t-tiny">共 {{majorCount}} 个专业</view>
+    </view>
+    <view class="t-tiny head-note">未填满不影响有效性，但建议珍惜每一个志愿位置。</view>
+  </view>
+
+  <view class="tip tip-warn sec" wx:if="{{beforeCount > 0}}">
+    有 {{beforeCount}} 个组是出分前加入的，请重新核验当年计划、组代码与选科要求。
+  </view>
+
+  <view class="tip sec" wx:if="{{profile.mode === 'after'}}">
+    调整顺序：靠前的志愿先被检索，投出即止；调剂只在本组内的专业之间进行。
+  </view>
+
+  <view class="card" wx:if="{{count}}">
+    <view class="wish-item" wx:for="{{list}}" wx:key="id">
+      <view class="ord">{{item.index}}</view>
+      <view class="flex-1 wi-body" data-id="{{item.id}}" bindtap="goDetail">
+        <view class="wi-name">{{item.collegeName}} · 组 {{item.groupCode}}</view>
+        <view class="t-tiny">{{item.subjectText}} · {{item.majorCount}} 个专业 ·
+          <text class="{{item.adjustCls}}">{{item.adjustText}}</text>
+        </view>
+      </view>
+      <view class="ops">
+        <view class="op" data-id="{{item.id}}" data-dir="up" catchtap="move">↑</view>
+        <view class="op" data-id="{{item.id}}" data-dir="down" catchtap="move">↓</view>
+        <view class="op op-del" data-id="{{item.id}}" catchtap="remove">×</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{!count}}">
+    志愿表还是空的。到「查院校」挑选院校专业组，选好组内专业后加入。
+  </view>
+
+  <view class="sec">
+    <view class="btn btn-light" bindtap="goList">{{count ? '继续添加院校专业组' : '去查院校'}}</view>
+  </view>
+
+  <view class="card sec" bindtap="goOfficial">
+    <view class="row">
+      <view class="t-sub">保存草稿不等于在官方系统确认</view>
+      <view class="tag tag-line">查看说明 ›</view>
+    </view>
+  </view>
+
+  <view class="card sec" wx:if="{{count}}" bindtap="clearAll">
+    <view class="row">
+      <view class="t-sub">清空志愿表</view>
+      <view class="tag tag-line">清空</view>
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="btn btn-ghost" bindtap="openExport">导出草稿</view>
+    <view class="btn" bindtap="goCheck">检查方案</view>
+  </view>
+
+</view>
+
+<view class="mask" wx:if="{{showExport}}" bindtap="closeExport">
+  <view class="modal" catchtap="noop">
+    <view class="modal-title">模拟草稿预览</view>
+    <view class="t-tiny">可以直接复制，用来逐行核对代码与顺序。</view>
+    <scroll-view class="export-box" scroll-y="true">
+      <text class="export-text">{{exportText}}</text>
+    </scroll-view>
+    <view class="row modal-btns">
+      <view class="btn btn-ghost flex-1" bindtap="closeExport">关闭</view>
+      <view class="btn flex-1" bindtap="copyExport">复制草稿</view>
+    </view>
+    <view class="t-tiny modal-warn">提示：本文件是模拟草稿，不等于已在官方系统确认。</view>
+  </view>
+</view>

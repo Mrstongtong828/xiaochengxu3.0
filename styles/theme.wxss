@@ -1,0 +1,31 @@
+/* 设计变量：所有页面只引用变量，改这里就能整体换色 */
+page {
+  --brand: #1F4E79;
+  --brand-dark: #16395A;
+  --brand-mid: #BBD8EC;
+  --brand-light: #E8F1F8;
+
+  --page-bg: #F5F7FA;
+  --card-bg: #FFFFFF;
+  --line: #E3E8EE;
+  --gray-bg: #F0F2F5;
+
+  --text-1: #1A1A1A;
+  --text-2: #5C6670;
+  --text-3: #9099A3;
+
+  --ok: #0E9F6E;
+  --ok-bg: #E6F6EF;
+  --ok-text: #0B7A54;
+
+  --warn: #C56A15;
+  --warn-bg: #FDF1E5;
+  --warn-text: #96500F;
+
+  --danger: #B32626;
+  --danger-bg: #FDECEC;
+
+  --radius-card: 24rpx;
+  --radius-btn: 20rpx;
+  --gap: 24rpx;
+}

@@ -1,0 +1,94 @@
+<view class="page page-with-bar">
+
+  <view class="card card-tight">
+    <view class="row">
+      <view class="bold">已检查 {{checked}} 个专业组</view>
+      <view class="tag {{errorCount > 0 ? 'tag-no' : (riskCount > 0 ? 'tag-warn' : 'tag-ok')}}">
+        {{errorCount > 0 ? errorCount + ' 项必须改' : (riskCount > 0 ? riskCount + ' 项提醒' : '未发现规则错误')}}
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{!checked}}" class="empty">
+    志愿表还是空的，先到「查院校」挑选院校专业组。
+  </view>
+
+  <block wx:if="{{checked}}">
+
+    <view class="group-title title-no">规则错误 · 必须先改</view>
+    <view class="card" wx:if="{{errorCount}}">
+      <view class="check-row" wx:for="{{result.errors}}" wx:key="title">
+        <view class="dot dot-no"></view>
+        <view class="flex-1">
+          <view class="row-title">{{item.title}}</view>
+          <view class="t-tiny">{{item.desc}}</view>
+        </view>
+      </view>
+      <view class="btn btn-light fix-btn" bindtap="goWish">到志愿表补充</view>
+    </view>
+    <view class="card" wx:else>
+      <view class="t-sub">没有发现规则错误：选科、重复、调剂选择都符合要求。</view>
+    </view>
+
+    <view class="group-title title-warn">决策风险 · 由你决定</view>
+    <view class="card" wx:if="{{riskCount}}">
+      <view class="check-row" wx:for="{{result.risks}}" wx:key="title">
+        <view class="dot dot-warn"></view>
+        <view class="flex-1">
+          <view class="row-title">{{item.title}}</view>
+          <view class="t-tiny">{{item.desc}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="card" wx:else>
+      <view class="t-sub">暂时没有需要提醒的决策风险。</view>
+    </view>
+
+    <view class="group-title title-gray">信息不足 · 待核验</view>
+    <view class="card" wx:if="{{unknownCount}}">
+      <view class="check-row" wx:for="{{result.unknowns}}" wx:key="title">
+        <view class="dot dot-gray"></view>
+        <view class="flex-1">
+          <view class="row-title">{{item.title}}</view>
+          <view class="t-tiny">{{item.desc}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="card" wx:else>
+      <view class="t-sub">志愿组的历史数据与来源都齐全。</view>
+    </view>
+
+  </block>
+
+  <view class="tip tip-plain" wx:if="{{checked}}">
+    三类结果的处理方式不同：规则错误必须改，决策风险由你决定，信息不足需要到官方目录或招生章程核验。
+  </view>
+
+  <view class="card card-tight">
+    <view class="t-tiny">
+      检查通过只表示已检查的项目没有问题，不代表能被录取；保存草稿也不等于已在官方系统确认。
+      {{dataNote}}
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="btn btn-ghost" bindtap="goList">继续添加</view>
+    <view class="btn" bindtap="openExport">导出模拟草稿</view>
+  </view>
+
+</view>
+
+<view class="mask" wx:if="{{showExport}}" bindtap="closeExport">
+  <view class="modal" catchtap="noop">
+    <view class="modal-title">模拟草稿</view>
+    <view class="t-tiny">含院校代码、组代码、专业代码与调剂选择，可逐行核对。</view>
+    <scroll-view class="export-box" scroll-y="true">
+      <text class="export-text">{{exportText}}</text>
+    </scroll-view>
+    <view class="row modal-btns">
+      <view class="btn btn-ghost flex-1" bindtap="closeExport">关闭</view>
+      <view class="btn flex-1" bindtap="copyExport">复制草稿</view>
+    </view>
+    <view class="t-tiny modal-warn">提示：复制到官方系统前请再次核验组代码与专业代码。</view>
+  </view>
+</view>

@@ -1,0 +1,146 @@
+<view class="page page-with-bar" wx:if="{{group}}">
+
+  <view class="card">
+    <view class="row-top">
+      <view class="flex-1">
+        <view class="school">{{group.collegeName}} · 专业组 {{group.groupCode}}</view>
+        <view class="t-tiny sub">{{group.city}} · {{group.nature}} · 本科 · {{group.groupName}}</view>
+      </view>
+      <view class="tag {{favorite ? 'tag-brand' : 'tag-line'}}" bindtap="toggleFavorite">
+        {{favorite ? '已收藏' : '收藏'}}
+      </view>
+    </view>
+
+    <view class="divider"></view>
+
+    <view class="kv" wx:for="{{history}}" wx:key="year">
+      <view class="k">{{item.year}} 组投档最低位次</view>
+      <view class="v">{{item.rank}}<text class="unit">位（{{profile.kind}}类）</text></view>
+    </view>
+    <view class="kv" wx:if="{{!history.length}}">
+      <view class="k">历史投档位次</view>
+      <view class="v">暂无<text class="unit">参考不足</text></view>
+    </view>
+    <view class="kv">
+      <view class="k">招生计划</view>
+      <view class="v">{{group.plan}}<text class="unit">人</text></view>
+    </view>
+    <view class="kv">
+      <view class="k">学费</view>
+      <view class="v">{{group.tuition}}<text class="unit">元/年</text></view>
+    </view>
+    <view class="t-tiny note">口径：{{profile.province}} · {{profile.kind}}类 · {{profile.batch}} · 组投档最低位次，不是组内专业的录取位次。</view>
+    <view class="tip tip-plain est-tip" wx:if="{{group.estimated}}">
+      本组是示例专业组：组内专业、计划与位次为演示数据，不是该校真实分专业录取数据。
+    </view>
+  </view>
+
+  <view class="conclusion {{match.ok ? 'conclusion-ok' : 'conclusion-no'}}">
+    你的选科：{{subjectText}}｜本组要求：{{group.subjectText}} → {{match.ok ? '可以填报' : '不能填报'}}
+    <text class="c-sub" wx:if="{{match.ok}}">选科是资格门槛，满足才能加入志愿表。</text>
+    <text class="c-sub" wx:else>缺少 {{match.miss}}，选科不符合的组无法填报，整条志愿无效。</text>
+  </view>
+
+  <view class="card" wx:if="{{group.note}}">
+    <view class="t-sub">专业组说明</view>
+    <view class="t-tiny">{{group.note}}</view>
+  </view>
+
+  <view class="card">
+    <view class="row">
+      <view class="card-title">生活与费用</view>
+      <view class="tag {{group.life.verified ? 'tag-ok' : 'tag-line'}}">{{group.life.verified ? '官方标准' : '待核验'}}</view>
+    </view>
+    <view class="divider"></view>
+    <view class="life-row">
+      <view class="life-label">学费（元/学年）</view>
+      <view class="life-value">{{group.life.tuition}}</view>
+    </view>
+    <view class="life-row">
+      <view class="life-label">住宿费</view>
+      <view class="life-value">{{group.life.dormFee}}</view>
+    </view>
+    <view class="life-row" wx:if="{{group.life.campus}}">
+      <view class="life-label">校区</view>
+      <view class="life-value">{{group.life.campus}}</view>
+    </view>
+    <view class="life-row">
+      <view class="life-label">宿舍条件</view>
+      <view class="life-value">{{group.life.dorm}}</view>
+    </view>
+    <view class="life-row">
+      <view class="life-label">食堂口碑</view>
+      <view class="life-value">{{group.life.canteen}}</view>
+    </view>
+    <view class="t-tiny life-source">来源：{{group.life.source}}</view>
+  </view>
+
+  <view class="card">
+    <view class="row">
+      <view class="card-title">组内专业 {{group.majors.length}} 个</view>
+      <view class="t-tiny">已选 {{selected.length}} / {{maxMajors}}</view>
+    </view>
+    <view class="divider"></view>
+
+    <view class="major" wx:for="{{majorsView}}" wx:key="code">
+      <view
+        class="checkbox {{item.sel ? 'checkbox-on' : ''}}"
+        data-code="{{item.code}}"
+        bindtap="toggleMajor"
+      ></view>
+      <view class="flex-1" data-code="{{item.code}}" bindtap="showMajor">
+        <view class="m-name">{{item.name}}</view>
+        <view class="t-tiny">代码 {{item.code}} · 计划 {{item.plan}} · 学制 {{item.years}} 年 · 学费 {{item.tuition}} 元/年</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{selected.length}}">
+    <view class="card-title">已选专业（按顺序，越靠前越优先）</view>
+    <view class="divider"></view>
+    <view class="item" wx:for="{{selected}}" wx:key="code">
+      <view class="ord">{{index + 1}}</view>
+      <view class="flex-1 sel-name">{{item.name}}</view>
+      <view class="op" data-index="{{index}}" data-dir="up" bindtap="moveMajor">↑</view>
+      <view class="op" data-index="{{index}}" data-dir="down" bindtap="moveMajor">↓</view>
+      <view class="op op-del" data-index="{{index}}" bindtap="removeMajor">×</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="row">
+      <view class="flex-1">
+        <view class="bold">服从专业调剂（限本组）</view>
+        <view class="t-tiny">不服从时，未被组内所填专业录取可能被退档</view>
+      </view>
+      <view class="switch {{adjust === true ? '' : 'switch-off'}}" bindtap="toggleAdjust"></view>
+    </view>
+    <view class="tip tip-warn adjust-tip" wx:if="{{adjust === false}}">
+      若不服从调剂且未被组内所填专业录取，可能被退档，只能参加征集志愿。是否服从由你决定，程序不做默认勾选。
+    </view>
+  </view>
+
+  <view class="t-tiny foot">{{dataNoteText}}</view>
+
+  <view class="bottom-bar">
+    <view class="btn btn-ghost" bindtap="toggleFavorite">{{favorite ? '取消收藏' : '加入收藏'}}</view>
+    <view class="btn {{canSave && match.ok ? '' : 'btn-disabled'}}" bindtap="save">
+      {{inDraft ? '更新志愿表' : '选好专业，加入志愿表'}}
+    </view>
+  </view>
+
+</view>
+
+<view class="mask" wx:if="{{majorModal}}" bindtap="closeMajor">
+  <view class="modal" catchtap="noop">
+    <view class="modal-title">{{majorModal.name}}</view>
+    <view class="divider"></view>
+    <view class="kv"><view class="k">专业代码</view><view class="v">{{majorModal.code}}</view></view>
+    <view class="kv"><view class="k">招生计划</view><view class="v">{{majorModal.plan}}<text class="unit">人</text></view></view>
+    <view class="kv"><view class="k">学制</view><view class="v">{{majorModal.years}}<text class="unit">年</text></view></view>
+    <view class="kv"><view class="k">学费</view><view class="v">{{majorModal.tuition}}<text class="unit">元/年</text></view></view>
+    <view class="kv"><view class="k">本组选科要求</view><view class="v">{{group.subjectText}}</view></view>
+    <view class="t-tiny modal-note">专业课程与就业方向建议对照高校招生章程与学院培养方案，演示数据不提供具体结论。</view>
+    <view class="btn btn-light modal-btn" bindtap="closeMajor">知道了</view>
+  </view>
+</view>

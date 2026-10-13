@@ -1,0 +1,104 @@
+<view class="page">
+
+  <view class="card">
+    <view class="row">
+      <view class="card-title">演示档案</view>
+      <view class="t-tiny">{{profile.province}} · {{profile.year}} · {{profile.batch}}</view>
+    </view>
+    <view class="divider"></view>
+
+    <view class="field">
+      <view class="field-label">使用阶段</view>
+      <view class="seg">
+        <view class="seg-item {{profile.mode === 'after' ? 'seg-on' : ''}}" data-value="after" bindtap="setMode">出分后</view>
+        <view class="seg-item {{profile.mode === 'before' ? 'seg-on' : ''}}" data-value="before" bindtap="setMode">出分前</view>
+      </view>
+    </view>
+    <view class="t-tiny field-note" wx:if="{{profile.mode === 'before'}}">出分前不显示个人分层，可先查询与收藏。</view>
+
+    <view class="field">
+      <view class="field-label">首选科目</view>
+      <view class="chip-row">
+        <view
+          wx:for="{{kinds}}"
+          wx:key="*this"
+          class="chip {{profile.kind === item ? 'chip-on' : ''}}"
+          data-value="{{item}}"
+          bindtap="pickKind"
+        >{{item}}</view>
+      </view>
+    </view>
+
+    <view class="field">
+      <view class="field-label">再选科目（选 2 门）</view>
+      <view class="chip-row">
+        <view
+          wx:for="{{secondView}}"
+          wx:key="name"
+          class="chip {{item.on ? 'chip-on' : ''}}"
+          data-value="{{item.name}}"
+          bindtap="toggleSecond"
+        >{{item.name}}</view>
+      </view>
+    </view>
+
+    <view class="field">
+      <view class="field-label">总分</view>
+      <input class="field-input" type="number" value="{{profile.score}}" bindblur="onScoreBlur" />
+    </view>
+
+    <view class="field">
+      <view class="field-label">位次</view>
+      <input class="field-input" type="number" value="{{profile.rank}}" bindblur="onRankBlur" />
+    </view>
+
+    <view class="t-tiny field-note">当前选科：{{profile.kind}}类 ＋ {{profile.second}}。修改后查询结果会按新选科重新过滤。</view>
+  </view>
+
+  <view class="card">
+    <view class="item" bindtap="goRules">
+      <view class="flex-1">规则与帮助</view>
+      <view class="item-arrow">›</view>
+    </view>
+    <view class="item" bindtap="showSource">
+      <view class="flex-1">数据年份与来源</view>
+      <view class="t-tiny">2026 广东</view>
+      <view class="item-arrow">›</view>
+    </view>
+    <view class="item">
+      <view class="flex-1">我的志愿表</view>
+      <view class="t-tiny">{{draftCount}} 个专业组</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="row">
+      <view class="card-title">我的收藏</view>
+      <view class="t-tiny" wx:if="{{favCount}}" bindtap="clearFavorites">清空收藏</view>
+    </view>
+    <view class="divider" wx:if="{{favCount}}"></view>
+    <view class="item" wx:for="{{favorites}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+      <view class="flex-1">
+        <view>{{item.collegeName}} · 组 {{item.groupCode}}</view>
+        <view class="t-tiny">{{item.subjectText}}</view>
+      </view>
+      <view class="item-arrow">›</view>
+    </view>
+    <view class="t-tiny" wx:if="{{!favCount}}">还没有收藏的院校专业组，在列表或详情页点收藏即可。</view>
+  </view>
+
+  <view class="card">
+    <view class="row">
+      <view class="flex-1">
+        <view class="bold">重置演示数据</view>
+        <view class="t-tiny">回到默认档案并清空志愿表与收藏，方便重复录制。</view>
+      </view>
+      <view class="btn btn-sm btn-ghost" bindtap="resetDemo">重置</view>
+    </view>
+  </view>
+
+  <view class="tip tip-plain">
+    {{dataNote}}　本小程序为演示与资料整理工具，不承诺录取结果；最终填报与确认以广东省教育考试院系统为准。
+  </view>
+
+</view>

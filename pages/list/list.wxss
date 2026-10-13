@@ -1,0 +1,53 @@
+.search-bar { padding: 20rpx var(--gap) 0; background: var(--page-bg); }
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 18rpx 20rpx;
+}
+.search-icon { color: var(--text-3); font-size: 32rpx; margin-right: 12rpx; }
+.search-input { flex: 1; font-size: 28rpx; }
+.search-clear { color: var(--text-3); font-size: 34rpx; padding: 0 8rpx; }
+
+.seg {
+  display: flex;
+  margin: 20rpx var(--gap) 0;
+  background: #E9EDF2;
+  border-radius: 14rpx;
+  padding: 6rpx;
+}
+.seg-item {
+  flex: 1;
+  text-align: center;
+  font-size: 27rpx;
+  color: var(--text-2);
+  padding: 12rpx 0;
+  border-radius: 10rpx;
+}
+.seg-on { background: #fff; color: var(--brand); font-weight: 600; }
+
+.chips { padding: 20rpx var(--gap) 0; white-space: nowrap; }
+.filter-row { display: flex; padding: 0 var(--gap) 20rpx; }
+.filter-row .chip { margin-right: 16rpx; }
+
+.page > .tip { margin: 0 var(--gap) 16rpx; }
+
+.group-card { margin: 0 var(--gap) 20rpx; }
+.school { font-size: 32rpx; font-weight: 600; }
+.tags-line { margin-top: 10rpx; }
+.tags-line .tag { margin-right: 10rpx; }
+
+.metric { margin-right: 36rpx; }
+.m-num {
+  display: block;
+  font-size: 34rpx;
+  font-weight: 600;
+  color: var(--brand-dark);
+}
+.m-lab { font-size: 22rpx; color: var(--text-3); }
+
+.major-line { margin-top: 14rpx; }
+.matched { color: var(--brand); }
+
+.list-foot { padding: 10rpx var(--gap) 60rpx; }

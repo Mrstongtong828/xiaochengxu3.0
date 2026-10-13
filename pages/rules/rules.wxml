@@ -1,0 +1,28 @@
+<view class="page">
+
+  <view class="card">
+    <view class="qa" wx:for="{{faqs}}" wx:key="q">
+      <view class="q">{{item.q}}</view>
+      <view class="a">{{item.a}}</view>
+    </view>
+  </view>
+
+  <view class="card" bindtap="showOfficial">
+    <view class="row">
+      <view class="t-sub">广东省教育考试院 · 官方志愿填报辅助系统</view>
+      <view class="tag tag-line">查看说明 ›</view>
+    </view>
+  </view>
+
+  <view class="card" bindtap="showBoundary">
+    <view class="row">
+      <view class="t-sub">使用边界与免责说明</view>
+      <view class="tag tag-line">查看 ›</view>
+    </view>
+  </view>
+
+  <view class="tip tip-plain">
+    {{dataNote}}　本小程序为演示与资料整理工具，不承诺录取结果；最终填报与确认以官方系统为准。
+  </view>
+
+</view>

@@ -1,0 +1,105 @@
+<view class="page">
+
+  <view class="card profile">
+    <view class="row">
+      <view class="p-name">演示考生 · {{profile.kind}}类</view>
+      <view class="p-edit" bindtap="goMine">修改</view>
+    </view>
+    <view class="p-nums">
+      <view class="p-num">
+        <text class="num">{{mode === 'after' ? scoreText : '--'}}</text>
+        <text class="unit">分</text>
+      </view>
+      <view class="p-num">
+        <text class="num">{{mode === 'after' && rankText ? rankText : '未填写'}}</text>
+        <text class="unit">位次</text>
+      </view>
+    </view>
+    <view class="t-tiny">{{profile.province}} · {{profile.batch}} · {{subjectText}}</view>
+  </view>
+
+  <view class="tip">位次比分数更适合跨年比较，数字越小排名越靠前。分层只是基于历史数据的参考。</view>
+
+  <view class="card">
+    <view class="quick">
+      <view class="quick-item" bindtap="goList">
+        <view class="qi qi-search"></view>
+        <text>查院校</text>
+      </view>
+      <view class="quick-item" bindtap="goListWithMode">
+        <view class="qi qi-book"></view>
+        <text>查专业</text>
+      </view>
+      <view class="quick-item" bindtap="goRank">
+        <view class="qi qi-chart"></view>
+        <text>一分一段</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{mode === 'after'}}">
+    <view class="row">
+      <view class="card-title">按位次初步筛选</view>
+      <view class="t-tiny">选科符合 {{summary.matchTotal}} 个；参与分层 {{gradeTotal}} 个</view>
+    </view>
+    <view class="grade-list">
+      <view class="grade-item" data-band="great" bindtap="goBand">
+        <text class="g-num">{{summary.great}}</text>
+        <text class="t-tiny">机会很大</text>
+      </view>
+      <view class="grade-item" data-band="good" bindtap="goBand">
+        <text class="g-num">{{summary.good}}</text>
+        <text class="t-tiny">机会较大</text>
+      </view>
+      <view class="grade-item" data-band="some" bindtap="goBand">
+        <text class="g-num">{{summary.some}}</text>
+        <text class="t-tiny">有一定机会</text>
+      </view>
+      <view class="grade-item" data-band="low" bindtap="goBand">
+        <text class="g-num">{{summary.low}}</text>
+        <text class="t-tiny">差距较大</text>
+      </view>
+    </view>
+    <view class="t-tiny grade-note">
+      已按你的选科过滤，只统计选科符合的专业组；另有 {{missingCount}} 个组缺少历史位次，不参与分层。分层是基于历史数据的参考，不代表录取结果。
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{mode === 'before'}}">
+    <view class="row">
+      <view class="card-title">先搞懂这四件事</view>
+      <view class="tag tag-line" bindtap="goRules">规则与帮助 ›</view>
+    </view>
+    <view class="divider"></view>
+    <view class="t-tiny qa-line">专业组：一所大学可以有多个组，每个组占 1 个志愿</view>
+    <view class="t-tiny qa-line">调剂：只在本组内的专业之间进行，不会跨校</view>
+    <view class="t-tiny qa-line">选科：不符合就是不能填，不是冲一冲的问题</view>
+    <view class="t-tiny qa-line">位次：数字越小排名越靠前，比分数更适合跨年比较</view>
+  </view>
+
+  <view class="card" bindtap="goWish">
+    <view class="row">
+      <view class="card-title">我的志愿表</view>
+      <view class="tag {{draftCount ? 'tag-ok' : 'tag-line'}}">已填 {{draftCount}} / {{maxGroups}} 组</view>
+    </view>
+    <view class="divider"></view>
+    <view class="row">
+      <view class="t-sub">{{draftCount ? '下一步：检查方案是否可以提交' : '还没有添加院校专业组'}}</view>
+      <view class="tag tag-line">{{draftCount ? '去检查 ›' : '去挑选 ›'}}</view>
+    </view>
+  </view>
+
+  <view class="tip tip-warn" wx:if="{{beforeCount > 0}}">
+    有 {{beforeCount}} 个组是出分前加入的，请重新核验当年计划、组代码与选科要求。
+  </view>
+
+  <view class="card card-tight" bindtap="goCheck">
+    <view class="row">
+      <view class="t-sub">方案检查与草稿导出</view>
+      <view class="tag tag-line">进入 ›</view>
+    </view>
+  </view>
+
+  <view class="t-tiny foot-note">{{dataNote}}　最终以广东省教育考试院官方系统为准。</view>
+
+</view>
