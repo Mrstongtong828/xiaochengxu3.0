@@ -23,6 +23,12 @@
       "outputPath": ""
     }
   },
+  "packOptions": {
+    "ignore": [
+      { "type": "folder", "value": "web-demo" }
+    ],
+    "include": []
+  },
   "condition": {
     "miniprogram": {
       "list": []

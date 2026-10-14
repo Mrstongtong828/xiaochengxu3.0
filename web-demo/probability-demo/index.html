@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>广东高考志愿概率分析系统 · Demo</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">广东高考志愿概率分析系统<span class="brand-sub">2027 届考生 · 演示版</span></div>
+    <div class="status" id="dataStatus">示例数据</div>
+  </div>
+</header>
+
+<div class="banner" id="banner"></div>
+
+<main class="app">
+
+  <aside class="side">
+    <section class="card">
+      <h2>考生档案</h2>
+      <label class="field"><span class="lbl">姓名</span>
+        <input type="text" id="fName" placeholder="请输入考生姓名" />
+      </label>
+      <label class="field"><span class="lbl">科类</span>
+        <div class="seg">
+          <button id="segPhysics" data-type="physics">物理类</button>
+          <button id="segHistory" data-type="history">历史类</button>
+        </div>
+      </label>
+      <label class="field"><span class="lbl">2027 高考分数</span>
+        <input type="number" id="fScore" min="300" max="750" step="1" />
+      </label>
+      <input type="range" id="fScoreRange" min="400" max="700" step="1" />
+      <label class="field" style="margin-top:10px"><span class="lbl">省排位（留空则按一分一段表自动换算）</span>
+        <input type="number" id="fRank" min="1" placeholder="自动换算" />
+      </label>
+      <div class="kv"><span class="muted">换算位次</span><span class="mono" id="autoRank">—</span></div>
+      <div class="kv"><span class="muted">等效分（2026 基准）</span><span class="mono" id="eqScore">—</span></div>
+      <label class="field" style="margin-top:10px"><span class="lbl">再选科目（用于判断专业组能否填报）</span>
+        <div class="picks" id="picks"></div>
+      </label>
+      <button class="btn primary" id="resetBtn" style="width:100%">重置演示档案</button>
+    </section>
+
+    <section class="card">
+      <h2>模拟填报</h2>
+      <div class="note" style="margin-bottom:8px">输入往年的分数，看它在当年的位次，以及换算到 2026 基准后的等效分。</div>
+      <div class="scrollx">
+        <table class="data" id="simTable"></table>
+      </div>
+      <div class="tiny" style="margin-top:8px" id="simHint"></div>
+    </section>
+  </aside>
+
+  <div class="content">
+    <nav class="tabs" id="tabs">
+      <button data-tab="rank" class="on">一分一档</button>
+      <button data-tab="prob">概率分析</button>
+      <button data-tab="level">专业水平</button>
+      <button data-tab="plan">冲稳保志愿表</button>
+      <button data-tab="model">模型与说明</button>
+    </nav>
+
+    <section id="sec-rank" class="tab-panel">
+      <div class="card">
+        <h2>一分一档 <span class="tiny" id="rankMeta"></span></h2>
+        <div class="stats" id="rankStats"></div>
+        <div style="margin-top:14px">
+          <span class="tiny">查看年份：</span>
+          <span id="yearSeg" class="seg" style="display:inline-flex;width:auto;margin-left:6px"></span>
+        </div>
+      </div>
+      <div class="card">
+        <h2>分段明细（考生分数附近）</h2>
+        <div class="scrollx"><table class="data" id="rankTable"></table></div>
+        <div class="note" style="margin-top:10px" id="rankNote"></div>
+      </div>
+      <div class="card">
+        <h2>同分跨年对照：同样的分数，不同年份不一样</h2>
+        <div class="scrollx"><table class="data" id="crossTable"></table></div>
+        <div class="note" style="margin-top:10px" id="crossNote"></div>
+      </div>
+    </section>
+
+    <section id="sec-prob" class="tab-panel hidden">
+      <div class="card">
+        <h2>录取概率总览 <span class="tiny" id="probMeta"></span></h2>
+        <div class="stats" id="probStats"></div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <span class="tiny">排序：</span>
+          <span class="seg" style="display:inline-flex;width:auto" id="sortSeg">
+            <button data-sort="prob" class="on" style="flex:0 0 auto;padding:0 14px">按概率</button>
+            <button data-sort="rank" style="flex:0 0 auto;padding:0 14px">按位次</button>
+          </span>
+          <span class="pick" id="eligibleToggle">只看我的选科能报的专业组</span>
+          <span class="pick" id="ordinaryToggle">只看普通组（排除专项/中外合作等）</span>
+        </div>
+      </div>
+      <div id="schoolList"></div>
+    </section>
+
+    <section id="sec-level" class="tab-panel hidden">
+      <div class="card">
+        <h2>专业水平是怎么分层的</h2>
+        <div class="legend" id="levelLegend"></div>
+        <div class="note" style="margin-top:10px" id="levelExplain"></div>
+      </div>
+      <div class="card">
+        <h2>6 校王牌专业一览</h2>
+        <div class="scrollx"><table class="data" id="levelTable"></table></div>
+      </div>
+      <div class="card">
+        <h2>按院校看专业布局</h2>
+        <div id="levelBySchool"></div>
+      </div>
+    </section>
+
+    <section id="sec-plan" class="tab-panel hidden">
+      <div class="card">
+        <h2>冲稳保填报原则</h2>
+        <div id="planPrinciple"></div>
+      </div>
+      <div class="card">
+        <h2>本 Demo 样本生成的参考志愿表</h2>
+        <div class="scrollx"><table class="data" id="planTable"></table></div>
+        <div class="note" style="margin-top:10px" id="planNote"></div>
+      </div>
+    </section>
+
+    <section id="sec-model" class="tab-panel hidden">
+      <div class="card">
+        <h2>概率是怎么算出来的</h2>
+        <div id="modelSteps"></div>
+      </div>
+      <div class="card">
+        <h2>波动假设 σ 的影响（敏感性）</h2>
+        <div class="scrollx"><table class="data" id="sensTable"></table></div>
+        <div class="note" style="margin-top:10px">σ 越大，概率越向 50% 收敛——这是模型的诚实之处：数据不足以支撑“90% 稳上”这种说法时，模型不会给你 90%。</div>
+      </div>
+      <div class="card">
+        <h2>数据与免责</h2>
+        <div class="kv"><span class="muted">数据状态</span><span id="srcStatus"></span></div>
+        <div class="kv"><span class="muted">数据来源</span><span id="srcText"></span></div>
+        <div id="provTable" style="margin-top:12px"></div>
+        <div class="note" style="margin-top:10px" id="disclaimer"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer id="footer"></footer>
+
+<script src="lib/model.js"></script>
+<script src="data/meta.js"></script>
+<script src="data/ranks.js"></script>
+<script src="data/schools.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
